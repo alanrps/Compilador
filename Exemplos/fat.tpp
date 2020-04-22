@@ -1,4 +1,4 @@
-inteiro: n
+inteiro: +1.1e-11
 flutuante: a[10]
 
 inteiro fatorial(inteiro: n)
@@ -20,4 +20,3 @@ inteiro principal()
     escreva(fatorial(n))
     retorna(0)
 fim
-
