@@ -67,9 +67,9 @@ class MyLexer(object):
     t_ABRE_COLCHETE = r'\['
     t_FECHA_COLCHETE = r'\]'
 
-    # Expressão regular para números inteiros
-    def t_NUM_INTEIRO(self,t):
-        r'[-\+]?[\d]+'
+    # Expressão regular para números em notação cientifica
+    def t_NUM_NOTACAO_CIENTIFICA(self,t):
+        r'[-\+]?((\d+\.\d*)|(\d*\.\d+)|(\d+))e[-\+]?((\d+\.\d*)|(\d*\.\d+)|(\d+))' 
 
         return t
     
@@ -79,15 +79,15 @@ class MyLexer(object):
 
         return t
 
-    # Expressão regular para números em notação cientifica
-    def t_NUM_NOTACAO_CIENTIFICA(self,t):
-        r'[-\+]?((\d+\.\d*)|(\d*\.\d+)|(\d+))e[-\+]?((\d+\.\d*)|(\d*\.\d+)|(\d+))' 
+    # Expressão regular para números inteiros
+    def t_NUM_INTEIRO(self,t):
+        r'[-\+]?[\d]+'
 
         return t
-
+    
     # Expressão regular para identificador
     def t_ID(self,t):
-        r'[a-zA-Z_][a-zA-Z_0-9]*'
+        r'[a-zA-Z_][a-zA-Zà-úÀ-Ú_0-9]*'
         t.type = self.reserved.get(t.value,'ID')    # verifica a correspondência com as palavras reservadas
         
         return t
@@ -112,10 +112,17 @@ class MyLexer(object):
     def t_newline(self,t):
          r'\n+'
          t.lexer.lineno += len(t.value) # Faz a contagem da quantidade de linhas
+    
+    # Calcula a coluna do token para caso ocorra algum erro
+    def find_column(self, t):
+        line_start = texto.rfind('\n', 0, t.lexpos) + 1
+
+        return (t.lexpos - line_start) + 1
 
     # Error 
     def t_error(self,t):
-        print("Illegal character '%s'" % t.value[0])
+        colunaToken = self.find_column(t)
+        print("Caractere Ilegal:%s, coluna:%d, linha:%d" % (t.value[0],colunaToken,t.lexer.lineno))
         t.lexer.skip(1) 
  
     # Build the lexer
@@ -143,4 +150,4 @@ m.build()
 # Passa o texto do arquivo lido como argumento para fazer a coleta dos tokens
 m.test(texto)
 # Imprime a quantidade de linhas do arquivo
-print(m.lexer.lineno)
+# print(m.lexer.lineno)
