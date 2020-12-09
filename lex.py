@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
 import ply.lex as lex
 
-class MyLexer(object):
+class Lexer(object):
     # Tupla, estática e pode ser heterogênea
     tokens = (
         'MAIS',
@@ -47,6 +47,7 @@ class MyLexer(object):
     tokens = list(tokens) + list(reserved.values())
 
     # Regras de expressões Regulares
+    t_ATRIBUICAO = r':='
     t_MAIS = r'\+'
     t_MENOS = r'-'
     t_MULTIPLICACAO = r'\*'
@@ -69,20 +70,23 @@ class MyLexer(object):
 
     # Expressão regular para números em notação cientifica
     def t_NUM_NOTACAO_CIENTIFICA(self,t):
-        r'[-\+]?((\d+\.\d*)|(\d*\.\d+)|(\d+))e[-\+]?((\d+\.\d*)|(\d*\.\d+)|(\d+))' 
+        r'(([0-9]+\.[0-9]*)|((-|\+)?[0-9]+))(e|E)(-|\+)?[0-9]+' 
+        t.value = float(t.value)
 
         return t
     
     # Expressão regular para números em ponto flutuante
     def t_NUM_PONTO_FLUTUANTE(self,t):
-        r'[-\+]?(\d+\.\d*)|(\d*\.\d+)'
+        r'[0-9]+\.[0-9]*'
+        t.value = float(t.value)
 
         return t
 
     # Expressão regular para números inteiros
     def t_NUM_INTEIRO(self,t):
-        r'[-\+]?[\d]+'
-
+        r'[0-9]+'
+        t.value = int(t.value)
+        
         return t
     
     # Expressão regular para identificador
@@ -101,7 +105,10 @@ class MyLexer(object):
 
     # Expressão regular para comentários
     def t_COMMENT(self,t):
-        r'\{.*?\}'
+        r'(\{(.|\n)*?\})|(\{(.|\n)*?)$'
+        t.lexer.lineno += len(t.value.split('\n')) - 1
+
+        pass
 
     # Expressão regular para espaços em branco, tabulação e carriage return
     def t_ESPACO_EM_BRANCO(self,t):
@@ -113,41 +120,42 @@ class MyLexer(object):
          r'\n+'
          t.lexer.lineno += len(t.value) # Faz a contagem da quantidade de linhas
     
-    # Calcula a coluna do token para caso ocorra algum erro
-    def find_column(self, t):
-        line_start = texto.rfind('\n', 0, t.lexpos) + 1
+    # # Calcula a coluna do token para caso ocorra algum erro
+    # def find_column(self, t):
+    #     line_start = codeFile.rfind('\n', 0, t.lexpos) + 1
 
-        return (t.lexpos - line_start) + 1
+    #     return (t.lexpos - line_start) + 1
 
     # Error 
     def t_error(self,t):
-        colunaToken = self.find_column(t)
-        print("Caractere Ilegal:%s, coluna:%d, linha:%d" % (t.value[0],colunaToken,t.lexer.lineno))
+        # colunaToken = self.find_column(t)
+        print("Caractere Ilegal:%s, linha:%d" % (t.value[0],t.lexer.lineno))
         t.lexer.skip(1) 
- 
+    
+    def f_column(self, t):
+        input = t.lexer.lexdata
+        line_start = input.rfind('\n', 0, t.lexpos) + 1
+        return (t.lexpos - line_start) + 1
+        
+    
+    def printToken(self, tok):
+        print('[',tok.value,']',' -> ','[',tok.type,']')
+
     # Build the lexer
-    def build(self,**kwargs):
-         self.lexer = lex.lex(module=self, **kwargs)
-     
+    def __init__(self, **kwargs):
+         self.lexer = lex.lex(module=self, debug=False, **kwargs)
+
     # Test it output
-    def test(self,data):
+    def lex(self, data):
          self.lexer.input(data)
          while True:
               tok = self.lexer.token()
               if not tok: 
                   break
-              print(tok)
+              self.printToken(tok)
 
-
-# Faz a abertura do arquivo   
-arq = open('./Exemplos/fat.tpp', 'r', encoding='UTF-8' )
-# Lê todo o arquivo
-texto = arq.read()
 # Instância o objeto Mylexer
-m = MyLexer()
-# Build the lexer
-m.build()    
+l = lex.Lexer()
+
 # Passa o texto do arquivo lido como argumento para fazer a coleta dos tokens
-m.test(texto)
-# Imprime a quantidade de linhas do arquivo
-# print(m.lexer.lineno)
+# l.lex(codeFile)
