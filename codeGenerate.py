@@ -150,25 +150,26 @@ class CodeGenerate():
                     function["builder"].branch(ate)
 
                     function["builder"].position_at_end(ate)
-
+                    
+                    aux_1 = None
                     if (node.children[3].name == "var"):
                         for var in self.local_vars + self.info["global_variables"]:
                             if (var.name == node.children[3].children[0].name):
-                                a_cmp = function["builder"].load(var, 'a_cmp', align=4)
+                                aux_1 = function["builder"].load(var, 'aux_1', align=4)
                     
                     elif (node.children[3].name == "numero"):
-                        a_cmp = ir.Constant(ir.IntType(32), int(node.children[3].children[0].name))
+                        aux_1 = ir.Constant(ir.IntType(32), int(node.children[3].children[0].name))
 
-                    
+                    aux_2 = None
                     if (node.children[5].name == "var"):
                         for var in self.local_vars + self.info["global_variables"]:
                             if (var.name == node.children[5].children[0].name):
-                                b_cmp = function["builder"].load(var, 'a_cmp', align=4)
+                                aux_2 = function["builder"].load(var, 'aux_1', align=4)
                     
                     elif (node.children[5].name == "numero"):
-                        b_cmp = ir.Constant(ir.IntType(32), int(node.children[5].children[0].name))
+                        aux_2 = ir.Constant(ir.IntType(32), int(node.children[5].children[0].name))
 
-                    comp = function["builder"].icmp_signed("==", a_cmp, b_cmp, name='comp')
+                    comp = function["builder"].icmp_signed("==", aux_1, aux_2, name='comp')
                     function["builder"].cbranch(comp, repita_fim, repita)
 
                     function["builder"].position_at_end(repita_fim)
@@ -184,25 +185,26 @@ class CodeGenerate():
                     iffalse_1 = function["builder"].append_basic_block('iffalse_1')
                     ifend_1 = function["builder"].append_basic_block('ifend_1')
 
+                    aux_1 = None
                     if (node.children[1].name == "var"):
                         for var in self.local_vars + self.info["global_variables"]:
                             if (var.name == node.children[1].children[0].name):
-                                a_cmp = function["builder"].load(var, 'a_cmp', align=4)
+                                aux_1 = function["builder"].load(var, 'aux_1', align=4)
 
                     
                     elif (node.children[1].name == "numero"):
-                        a_cmp = ir.Constant(ir.IntType(32), int(node.children[1].children[0].name))
+                        aux_1 = ir.Constant(ir.IntType(32), int(node.children[1].children[0].name))
 
-                    
+                    aux_2 = None
                     if (node.children[3].name == "var"):
                         for var in self.local_vars + self.info["global_variables"]:
                             if (var.name == node.children[3].children[0].name):
-                                b_cmp = function["builder"].load(var, 'a_cmp', align=4)
+                                aux_2 = function["builder"].load(var, 'aux_1', align=4)
                     
                     elif (node.children[3].name == "numero"):
-                        b_cmp = ir.Constant(ir.IntType(32), int(node.children[3].children[0].name))
+                        aux_2 = ir.Constant(ir.IntType(32), int(node.children[3].children[0].name))
                     
-                    If_1 = function["builder"].icmp_signed(node.children[2].name, a_cmp, b_cmp, name='if_test_1')
+                    If_1 = function["builder"].icmp_signed(node.children[2].name, aux_1, aux_2, name='if_test_1')
                     function["builder"].cbranch(If_1, iftrue_1, iffalse_1)
 
                     then_body = node.children[5]
