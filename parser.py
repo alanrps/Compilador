@@ -3,6 +3,7 @@ from anytree import Node
 from lex import Lexer
 
 class Parser():
+  # Tokens do processo de análise léxica
   tokens = Lexer.tokens
 
   def __init__(self, **kwargs):
@@ -498,8 +499,8 @@ class Parser():
       print('Sintaxe Inválida da saída')
 
 
-  def input(self, codeFile, numberOfLines):
+  def syntactic(self, codeFile, numberOfLines):
     self.totalLines = numberOfLines
-    self.tree = self.parser.parse(codeFile, tracking=True)
+    self.tree = self.parser.parse(codeFile, tracking = True)
 
     return self.tree, self.result

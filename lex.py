@@ -119,12 +119,6 @@ class Lexer(object):
     def t_newline(self,t):
          r'\n+'
          t.lexer.lineno += len(t.value) # Faz a contagem da quantidade de linhas
-    
-    # # Calcula a coluna do token para caso ocorra algum erro
-    # def find_column(self, t):
-    #     line_start = codeFile.rfind('\n', 0, t.lexpos) + 1
-
-    #     return (t.lexpos - line_start) + 1
 
     # Error 
     def t_error(self,t):
@@ -132,12 +126,13 @@ class Lexer(object):
         print("Caractere Ilegal:%s, linha:%d" % (t.value[0],t.lexer.lineno))
         t.lexer.skip(1) 
     
+    # Calcula a coluna caso ocorra algum erro
     def f_column(self, t):
         input = t.lexer.lexdata
         line_start = input.rfind('\n', 0, t.lexpos) + 1
         return (t.lexpos - line_start) + 1
         
-    
+    # Realiza a impressão dos tokens
     def printToken(self, tok):
         print('[',tok.value,']',' -> ','[',tok.type,']')
 

@@ -1,0 +1,5 @@
+clang module.ll -o modulo
+./modulo
+echo $?
+-----------------------------------------------------------------
+clang module.ll io.ll -o modulo
