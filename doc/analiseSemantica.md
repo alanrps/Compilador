@@ -3,7 +3,7 @@
 > Etapa responsável por fazer verificações de erros de tipo e concordância, pois mesmo programas gramaticamente corretos ainda podem conter erros
 
 ## Processo de análise semântica
-A etapa de análise sintática é responsável por fazer diversas checagens, no entanto, antes de iniciar o processo de verificação foi realizada a podagem da árvore, assim eliminando determinados nós, como por exemplo "acao" e "expressão", para que assim facilite a análise léxica, eleminando nós que não possuem grande importância nessa etapa.
+A etapa de análise semantica é responsável por fazer diversas checagens, no entanto, antes de iniciar o processo de verificação, foi realizada a podagem da árvore, assim eliminando determinados nós, como por exemplo "acao" e "expressão", para que assim facilite a análise, eleminando nós que não possuem grande importância nessa etapa.
 
 ![Árvore resultante do processo de análise sintática](images/arvoreComPoda.png)
 
