@@ -15,16 +15,16 @@ class CodeGenerate():
         llvm.initialize_native_target()
         llvm.initialize_native_asmprinter()
 
-        module = ir.Module('module.bc')
-        module.triple = llvm.get_default_triple()
-        target = llvm.Target.from_triple(module.triple)
+        self.module = ir.Module('module.bc')
+        self.module.triple = llvm.get_default_triple()
+        target = llvm.Target.from_triple(self.module.triple)
         target_machine = target.create_target_machine()
-        module.data_layout = target_machine.target_data
+        self.module.data_layout = target_machine.target_data
 
-        self.escrevaInteiro = ir.Function(module,ir.FunctionType(ir.VoidType(), [ir.IntType(32)]),name="escrevaInteiro")
-        self.escrevaFlutuante = ir.Function(module,ir.FunctionType(ir.VoidType(),[ir.FloatType()]),name="escrevaFlutuante")
-        self.leiaInteiro = ir.Function(module,ir.FunctionType(ir.IntType(32),[]),name="leiaInteiro")
-        self.leiaFlutuante = ir.Function(module,ir.FunctionType(ir.FloatType(),[]),name="leiaFlutuante")
+        self.escrevaInteiro = ir.Function(self.module,ir.FunctionType(ir.VoidType(), [ir.IntType(32)]),name="escrevaInteiro")
+        self.escrevaFlutuante = ir.Function(self.module,ir.FunctionType(ir.VoidType(),[ir.FloatType()]),name="escrevaFlutuante")
+        self.leiaInteiro = ir.Function(self.module,ir.FunctionType(ir.IntType(32),[]),name="leiaInteiro")
+        self.leiaFlutuante = ir.Function(self.module,ir.FunctionType(ir.FloatType(),[]),name="leiaFlutuante")
 
 
     def find_var(self, name, local_vars, function):
