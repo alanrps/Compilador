@@ -1,27 +1,21 @@
 #include <stdio.h>
 
-void escrevaInteiro(int inteiro) {
-  printf("%d\n", inteiro);
-  
+void escrevaInteiro(int ni) {
+  printf("%d\n", ni);
 }
 
-void escrevaFlutuante(float flutuante) {
-  printf("%f\n", flutuante);
-
+void escrevaFlutuante(float nf) {
+  printf("%f\n", nf);
 }
 
 int leiaInteiro() {
-  int numero;
-
-  scanf("%d", &numero);
-
-  return numero;
+  int num;
+  scanf("%d", &num);
+  return num;
 }
 
 float leiaFlutuante() {
-  float numero;
-
-  scanf("%f", &numero);
-
-  return numero;
+  float num;
+  scanf("%f", &num);
+  return num;
 }
