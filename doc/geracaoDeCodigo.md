@@ -76,4 +76,4 @@ float leiaFlutuante() {
 
 #### Execução do projeto
 
-![Árvore resultante do processo de análise sintática](images/arvoreComPoda.png)
+![Árvore resultante do processo de análise sintática](images/execucao.png)
